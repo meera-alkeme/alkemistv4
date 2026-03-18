@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>David Kumaran — The Alkemist</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black:  #08090c;
+  --white:  #ffffff;
+  --off:    #f7f6f3;
+  --ink:    #0f1014;
+  --mid:    #6b6a74;
+  --light:  #b0aeb8;
+  --gold:   #b87d2a;
+  --gold-l: #d4962e;
+  --border: rgba(15,16,20,0.1);
+  --borderl:rgba(15,16,20,0.06);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--white);
+  color: var(--ink);
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:200;
+  height:62px;
+  display: flex; justify-content:space-between; align-items:center;
+  padding: 0 3.5rem;
+  background: rgba(8,9,12,0.9);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+}
+.nav-logo {
+  font-size:12px; font-weight:700; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--gold-l); text-decoration:none;
+}
+.nav-links { display:flex; gap:2.5rem; list-style:none; }
+.nav-links a {
+  font-size:11px; font-weight:400; letter-spacing:.12em; text-transform:uppercase;
+  color:rgba(255,255,255,0.5); text-decoration:none; transition:color .2s;
+}
+.nav-links a:hover { color:#fff; }
+
+/* ── HERO — video placeholder ── */
+#hero {
+  height: 100vh;
+  background: var(--black);
+  display: flex; align-items: flex-end; justify-content: flex-start;
+  padding-bottom: 5rem;
+  position: relative; overflow: hidden;
+}
+.hero-video-bg {
+  position: absolute; inset:0;
+  background: linear-gradient(135deg, #0a0b10 0%, #0e0f16 100%);
+  display:flex; align-items:center; justify-content:center;
+}
+.video-placeholder {
+  width:100%; height:100%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:1rem; color:rgba(255,255,255,.2);
+}
+.video-placeholder svg { opacity:.3; }
+.video-placeholder p { font-size:11px; letter-spacing:.3em; text-transform:uppercase; }
+
+.hero-content {
+  position:relative; z-index:2;
+  text-align:left; padding:0 3.5rem;
+  max-width:750px;
+}
+.hero-eyebrow {
+  font-size:11px; font-weight:600; letter-spacing:.42em; text-transform:uppercase;
+  color:var(--gold-l); margin-bottom:2rem;
+  opacity:0; animation:fadeUp .9s .3s cubic-bezier(.22,1,.36,1) forwards;
+}
+.hero-name {
+  font-size:clamp(2.6rem,6vw,6.5rem); font-weight:800;
+  line-height:.93; letter-spacing:-.03em; color:#fff;
+  opacity:0; animation:fadeUp .9s .45s cubic-bezier(.22,1,.36,1) forwards;
+}
+.hero-name .accent {
+  background: linear-gradient(135deg, #7ec8e3 0%, #4a9bbe 38%, #c8a86a 65%, #c8902a 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.hero-tag { display:none; }
+.hero-polymath { display:none; }
+.hero-scroll {
+  position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:.6rem;
+  color:rgba(255,255,255,.3); font-size:9px; letter-spacing:.28em; text-transform:uppercase;
+  opacity:0; animation:fadeUp .9s .9s cubic-bezier(.22,1,.36,1) forwards;
+}
+.scroll-line {
+  width:1px; height:40px;
+  background:linear-gradient(to bottom, rgba(255,255,255,.3), transparent);
+  animation:scrollPulse 2s 1.5s infinite;
+}
+@keyframes scrollPulse {
+  0%,100% { opacity:.3; transform:scaleY(1); }
+  50%      { opacity:.8; transform:scaleY(1.15); }
+}
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:none; }
+}
+
+/* ── DIAGONAL TRANSITION ── */
+/* Each section gets a clipped shape at top/bottom */
+.diagonal-top {
+  position:relative; margin-top:-60px; z-index:1;
+  clip-path: polygon(0 60px, 100% 0, 100% 100%, 0 100%);
+  padding-top:100px;
+}
+.diagonal-top-reverse {
+  position:relative; margin-top:-60px; z-index:1;
+  clip-path: polygon(0 0, 100% 60px, 100% 100%, 0 100%);
+  padding-top:100px;
+}
+
+/* ── SECTION BASE ── */
+.section {
+  padding: 7rem 3.5rem;
+  position:relative;
+}
+.section.white { background: var(--white); color: var(--ink); }
+.section.off   { background: var(--off);   color: var(--ink); }
+.section.black { background: var(--black); color: #fff; }
+
+.section-inner { max-width: 1120px; margin: 0 auto; }
+
+/* ── SECTION LABEL ── */
+.s-label {
+  display:flex; align-items:center; gap:1rem;
+  margin-bottom:1.25rem;
+}
+.s-num {
+  font-size:10px; font-weight:700; letter-spacing:.25em;
+  color:var(--gold); opacity:.7;
+}
+.s-tag {
+  font-size:10px; font-weight:600; letter-spacing:.3em;
+  text-transform:uppercase; color:var(--light);
+}
+.s-line { flex:1; height:1px; background:var(--borderl); }
+
+/* ── BIG HEADLINE ── */
+.big-head {
+  font-size:clamp(2.5rem,5.5vw,5.25rem);
+  font-weight:800; line-height:.93; letter-spacing:-.03em;
+  color:var(--ink); margin-bottom:3.5rem;
+}
+.big-head.light { color:#fff; }
+.big-head em { font-style:italic; font-weight:300; color:var(--mid); }
+
+/* ── TWO COL LAYOUT ── */
+.two-col {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:5rem; align-items:start;
+}
+.three-col {
+  display:grid; grid-template-columns:1fr 1fr 1fr;
+  gap:3rem; align-items:start;
+}
+
+/* ── BODY TEXT ── */
+.body-text {
+  font-size:1.05rem; font-weight:300; line-height:1.9;
+  color:var(--mid); max-width:540px;
+}
+.body-text + .body-text { margin-top:1.25rem; }
+.body-text strong { color:var(--ink); font-weight:600; }
+.body-text a { color:var(--gold); text-decoration:none; border-bottom:1px solid rgba(184,125,42,.3); transition:border-color .2s; }
+.body-text a:hover { border-color:var(--gold); }
+.body-text.light { color:rgba(255,255,255,.55); }
+.body-text.light strong { color:#fff; }
+.body-text.light a { color:#d4962e; }
+
+/* ── STAT BLOCK ── */
+.stat-block {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:2.5rem 3rem;
+}
+.stat { }
+.stat-n {
+  font-size:3rem; font-weight:200; line-height:1;
+  letter-spacing:-.03em; color:var(--ink);
+  border-bottom:1.5px solid var(--gold);
+  padding-bottom:.5rem; margin-bottom:.4rem;
+  display:inline-block;
+}
+.stat-n.light { color:#fff; border-color:rgba(212,150,46,.5); }
+.stat-l { font-size:10px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--light); }
+
+/* ── PULL QUOTE ── */
+.pull-quote {
+  border-left:3px solid var(--gold);
+  padding:1.5rem 2rem;
+  background:rgba(184,125,42,.05);
+  border-radius:0 8px 8px 0;
+}
+.pull-quote p { font-size:1.2rem; font-weight:300; font-style:italic; color:var(--ink); line-height:1.55; margin-bottom:.6rem; }
+.pull-quote cite { font-size:9px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); font-style:normal; }
+.pull-quote.light { background:rgba(212,150,46,.07); }
+.pull-quote.light p { color:#fff; }
+
+/* ── TAGS ── */
+.tag-row { display:flex; flex-wrap:wrap; gap:.45rem; margin-top:1.5rem; }
+.tag {
+  font-size:10px; font-weight:500; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--mid); border:1px solid var(--border); padding:.45em 1em; border-radius:2px;
+  transition:all .25s;
+}
+.tag:hover { color:var(--ink); border-color:var(--gold); }
+
+/* ── TIMELINE ── */
+.timeline { }
+.tl-item {
+  display:grid; grid-template-columns:6rem 1fr;
+  gap:2rem; padding:1.75rem 0;
+  border-bottom:1px solid var(--borderl);
+}
+.tl-yr { font-size:10px; font-weight:700; letter-spacing:.18em; color:var(--gold); padding-top:3px; }
+.tl-body { font-size:.98rem; font-weight:300; color:var(--mid); line-height:1.75; }
+.tl-body strong { color:var(--ink); font-weight:600; }
+
+/* ── FULL-WIDTH QUOTE BREAK (within diagonal sections) ── */
+.quote-break {
+  text-align:center; padding:5rem 3.5rem;
+  background:var(--black); color:#fff;
+  position:relative;
+  clip-path: polygon(0 40px, 100% 0, 100% calc(100% - 40px), 0 100%);
+  margin:-1px 0;
+  padding-top:calc(5rem + 40px);
+  padding-bottom:calc(5rem + 40px);
+}
+.quote-break p {
+  font-size:clamp(1.4rem,3vw,2.5rem); font-weight:300;
+  font-style:italic; color:#fff; line-height:1.4;
+  max-width:860px; margin:0 auto .75rem;
+}
+.quote-break cite { font-size:10px; font-weight:700; letter-spacing:.32em; text-transform:uppercase; color:var(--gold-l); font-style:normal; }
+
+/* ── ROLE PILLS ── */
+.role-pills { display:flex; flex-wrap:wrap; gap:.5rem; }
+.role-pill {
+  font-size:10px; font-weight:500; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--mid); border:1px solid var(--border); padding:.45em 1.1em; border-radius:100px;
+  transition:all .25s;
+}
+.role-pill:hover { color:var(--ink); border-color:var(--ink); }
+
+/* ── CONNECT ── */
+#connect { background:var(--off); padding:6rem 3.5rem 5rem; }
+.social-row { display:flex; justify-content:center; align-items:center; gap:3.5rem; margin-bottom:4rem; }
+.social-link { display:flex; flex-direction:column; align-items:center; gap:.55rem; text-decoration:none; opacity:.35; transition:all .25s; }
+.social-link:hover { opacity:1; transform:translateY(-3px); }
+.social-link svg { width:24px; height:24px; }
+.social-lbl { font-size:9px; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--mid); }
+.footer-note { text-align:center; font-size:10px; font-weight:400; letter-spacing:.15em; text-transform:uppercase; color:var(--light); border-top:1px solid var(--border); padding-top:2rem; line-height:2.2; }
+
+/* ── HORIZONTAL RULE ── */
+.hr { width:100%; height:1px; background:var(--borderl); margin:4rem 0; }
+
+/* ── REVEAL ── */
+.reveal { opacity:0; transform:translateY(30px); transition:opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1); }
+.reveal.on { opacity:1; transform:none; }
+.d1 { transition-delay:.1s; } .d2 { transition-delay:.2s; } .d3 { transition-delay:.3s; } .d4 { transition-delay:.4s; }
+
+/* ── MOBILE ── */
+@media(max-width:860px) {
+  nav { padding:0 1.5rem; }
+  .nav-links { display:none; }
+  .section { padding:5rem 1.5rem; }
+  .two-col, .three-col { grid-template-columns:1fr; gap:2.5rem; }
+  .stat-block { grid-template-columns:1fr 1fr; gap:2rem; }
+  .big-head { font-size:clamp(2rem,9vw,3.5rem); margin-bottom:2.5rem; }
+  .tl-item { grid-template-columns:4.5rem 1fr; gap:1.25rem; }
+  #connect { padding:4rem 1.5rem; }
+  .social-row { gap:2rem; }
+  .diagonal-top, .diagonal-top-reverse { clip-path:none; margin-top:0; padding-top:0; }
+  .quote-break { clip-path:none; padding:4rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">The Alkemist</a>
+  <ul class="nav-links">
+    <li><a href="#entrepreneur">Entrepreneur</a></li>
+    <li><a href="#investor">Investor</a></li>
+    <li><a href="#crypto">Crypto</a></li>
+    <li><a href="#spiritual">Spiritual</a></li>
+    <li><a href="#connect">Connect</a></li>
+  </ul>
+</nav>
+
+<!-- HERO — video goes here -->
+<section id="hero">
+  <div class="hero-video-bg">
+    <video
+      autoplay muted loop playsinline
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;"
+    >
+      <source src="hero.mp4" type="video/mp4">
+    </video>
+    <div style="position:absolute;inset:0;background:rgba(8,9,12,0.52);"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Polymath · Founder · Yogi · Dravidian</div>
+    <h1 class="hero-name">
+      Entrepreneur,<br>
+      investor &amp;<br>
+      <span class="accent">alkemist.</span>
+    </h1>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ── INTRO ── diagonal top, white -->
+<section class="section white diagonal-top" style="padding-top:8rem;">
+  <div class="section-inner">
+    <div class="reveal">
+      <p style="font-size:clamp(1.3rem,2.5vw,1.9rem); font-weight:300; line-height:1.55; color:var(--mid); max-width:780px;">
+        Currently scaling my sixth company, <strong style="color:var(--ink);">wisy.ai</strong>, backed by 8VC, Coca-Cola, and Kamay Ventures. I bridge venture and financial engineering with a human-centric core — understanding that balancing high speeds with stillness is paramount in the AI era.
+      </p>
+    </div>
+    <div class="hr"></div>
+    <div class="role-pills reveal d1">
+      <span class="role-pill">Entrepreneur</span>
+      <span class="role-pill">Startup Investor</span>
+      <span class="role-pill">Crypto Native</span>
+      <span class="role-pill">Spiritual Engineer</span>
+      <span class="role-pill">Bio-Hacker</span>
+      <span class="role-pill">Polymath</span>
+      <span class="role-pill">Immigrant</span>
+      <span class="role-pill">Dravidian</span>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE BREAK 1 -->
+<div class="quote-break">
+  <p>"If you want to innovate your company, start with yourself."</p>
+  <cite>— David Kumaran</cite>
+</div>
+
+<!-- ── ENTREPRENEUR ── diagonal top, off-white -->
+<section id="entrepreneur" class="section off diagonal-top-reverse" style="padding-top:8rem;">
+  <div class="section-inner">
+    <div class="s-label reveal"><span class="s-num">01</span><span class="s-tag">Entrepreneur</span><span class="s-line"></span></div>
+    <h2 class="big-head reveal d1">Building from<br>a different<br><em>baseline.</em></h2>
+    <div class="two-col">
+      <div>
+        <p class="body-text reveal d1">David has built 5 startups, achieved 3 successful exits, raised over $100M, and advised 100+ companies. He is currently Co-Founder and Head of Growth at <a href="https://wisy.ai" target="_blank">Wisy</a>.</p>
+        <p class="body-text reveal d1">As a polymath <em>alkemist</em>, he combines 20+ years of entrepreneurship with a yoga practice — a uniquely human-centric blueprint for <strong>Seed to Series B companies</strong>.</p>
+        <p class="body-text reveal d1">He was part of the leadership team at <a href="https://handy.com" target="_blank">Handy</a> (acquired by ANGI), co-founded startups acquired by <strong>Nextel</strong> and <strong>BP Solar</strong>. As EIR at Silicon Valley Co-Lab Dojo he collaborated with <strong>NFLPA, Fanatics, Toyota</strong> and <strong>GM</strong>. His venture builder <a href="https://satya.studio" target="_blank">Satya</a> accelerated early-stage societal innovation.</p>
+        <p class="body-text reveal d1" style="margin-top:1.5rem; font-size:.92rem; color:var(--light);">David understands that Silicon Valley is a mindset that augments high-growth ecosystems — not a zip code.</p>
+      </div>
+      <div>
+        <div class="stat-block reveal d2" style="margin-bottom:3rem;">
+          <div class="stat"><div class="stat-n">5</div><div class="stat-l">Built &amp; sold</div></div>
+          <div class="stat"><div class="stat-n">3</div><div class="stat-l">Acquisitions</div></div>
+          <div class="stat"><div class="stat-n">$100M+</div><div class="stat-l">Capital raised</div></div>
+          <div class="stat"><div class="stat-n">100+</div><div class="stat-l">Cos. advised</div></div>
+        </div>
+        <div class="pull-quote reveal d3">
+          <p>"Try is the thief of time."</p>
+          <cite>— David Kumaran</cite>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE BREAK 2 -->
+<div class="quote-break">
+  <p>"Silicon Valley is not a place.<br>It's a mindset."</p>
+  <cite>— David Kumaran</cite>
+</div>
+
+<!-- ── INVESTOR ── white -->
+<section id="investor" class="section white diagonal-top">
+  <div class="section-inner">
+    <div class="s-label reveal"><span class="s-num">02</span><span class="s-tag">Startup Investor</span><span class="s-line"></span></div>
+    <h2 class="big-head reveal d1">A founder<br>who invests.</h2>
+    <div class="two-col">
+      <div>
+        <p class="body-text reveal d1">David is an early-stage investor, General Partner at <a href="https://ascendhumanity.com" target="_blank">Ascend Capital</a> and Founding Partner at <a href="https://futurestack.ventures" target="_blank">Future Stack</a> — a human-centric model focused on improving the well-being of individuals and the planet.</p>
+        <p class="body-text reveal d1">His investment philosophy centers on <strong>preventing founder burnout</strong>. Having experienced the full venture cycle himself and mentored hundreds of founders, he's committed to helping founders achieve sustainable growth while maintaining physical, mental, and emotional well-being.</p>
+        <p class="body-text reveal d1">David graduated from Plexo Capital's first GPx cohort and has advised <strong>500 Startups, a16z's TxO Fund, YC,</strong> and <strong>TechStars</strong>.</p>
+        <div class="pull-quote reveal d2" style="margin-top:2rem;">
+          <p>"I am not a Founder-friendly investor. I am a Founder."</p>
+          <cite>— David Kumaran</cite>
+        </div>
+      </div>
+      <div class="reveal d2">
+        <p style="font-size:10px; font-weight:700; letter-spacing:.25em; text-transform:uppercase; color:var(--light); margin-bottom:1.25rem;">Portfolio</p>
+        <div class="tag-row">
+          <span class="tag">Wisy</span>
+          <span class="tag">Pendulum</span>
+          <span class="tag">Mirza</span>
+          <span class="tag">Ecotone</span>
+          <span class="tag">Breakr</span>
+          <span class="tag">Surge.ai</span>
+          <span class="tag">Drop Party ↗</span>
+          <span class="tag">Veracity Protocol</span>
+          <span class="tag">8 Myles</span>
+          <span class="tag">+ many others</span>
+        </div>
+        <div style="margin-top:3rem;">
+          <p style="font-size:10px; font-weight:700; letter-spacing:.25em; text-transform:uppercase; color:var(--light); margin-bottom:1.25rem;">Funds & Accelerators</p>
+          <div class="tag-row">
+            <span class="tag">Ascend Capital</span>
+            <span class="tag">Future Stack</span>
+            <span class="tag">Plexo GPx</span>
+            <span class="tag">500 Startups</span>
+            <span class="tag">a16z TxO</span>
+            <span class="tag">YC</span>
+            <span class="tag">TechStars</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE BREAK 3 -->
+<div class="quote-break">
+  <p>"The principles of blockchain<br>are based in spiritual technology."</p>
+  <cite>— David Kumaran</cite>
+</div>
+
+<!-- ── CRYPTO ── off-white -->
+<section id="crypto" class="section off diagonal-top-reverse">
+  <div class="section-inner">
+    <div class="s-label reveal"><span class="s-num">03</span><span class="s-tag">Crypto Native</span><span class="s-line"></span></div>
+    <h2 class="big-head reveal d1">Blockchain<br>is spiritual<br><em>technology.</em></h2>
+    <div class="two-col">
+      <div>
+        <p class="body-text reveal d1">David is part of the Bitcoin class of 2013. He doubled down in 2017 and tripled down in 2020. He identifies as a <strong>"Satoshian"</strong> — fully embracing the fundamentals of blockchain including trust, transparency, and inclusion.</p>
+        <p class="body-text reveal d1">He believes blockchain is the first technological framework since the Industrial Revolution with the potential to enhance human consciousness on our planet. His diverse experience at the intersection of <strong>AI + Crypto + Culture</strong> provides a unique perspective to build and contribute to DAOs.</p>
+        <p class="body-text reveal d1">Having lived three years in <a href="https://auroville.org" target="_blank">Auroville</a> — what David considers the first version of the DAO city model — he brings experiential depth that no whitepaper can replicate.</p>
+      </div>
+      <div class="reveal d2">
+        <div style="margin-bottom:2.5rem;">
+          <p style="font-size:10px; font-weight:700; letter-spacing:.25em; text-transform:uppercase; color:var(--light); margin-bottom:1rem;">Class of</p>
+          <p style="font-size:5rem; font-weight:200; color:var(--ink); line-height:1; letter-spacing:-.04em; border-bottom:1.5px solid var(--gold); padding-bottom:.5rem; display:inline-block;">2013</p>
+          <p style="font-size:.85rem; color:var(--light); margin-top:.75rem;">Bitcoin · doubled 2017 · tripled 2020</p>
+        </div>
+        <div class="pull-quote reveal d3">
+          <p>"For the first time since the Industrial Revolution, we have a framework that can enhance human consciousness."</p>
+          <cite>— David Kumaran</cite>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE BREAK 4 -->
+<div class="quote-break">
+  <p>"To grow you must do<br>what you fear most."</p>
+  <cite>— David Kumaran</cite>
+</div>
+
+<!-- ── SPIRITUAL ── white -->
+<section id="spiritual" class="section white diagonal-top">
+  <div class="section-inner">
+    <div class="s-label reveal"><span class="s-num">04</span><span class="s-tag">Spiritual Engineer</span><span class="s-line"></span></div>
+    <h2 class="big-head reveal d1">Consciousness<br>as a <em>cipher.</em></h2>
+    <div class="two-col">
+      <div>
+        <p class="body-text reveal d1">Born in the East and raised in the West, David grew up enmeshed in two disparate cultures. At 30, a motorcycle journey through India became a three-year exploration of self, culture, and yoga — through which he discovered all the answers he sought lay within.</p>
+        <p class="body-text reveal d1">He spent three years in <a href="https://auroville.org" target="_blank">Auroville</a> studying Sri Aurobindo's <strong>Integral Yoga</strong> — unlocking his first spiritual code. In 2016 he met <strong>Sadhguru</strong>, under whom he continues to study, unlocking the spiritual code of the heart.</p>
+        <p class="body-text reveal d1">With <strong>10,000+ meditation hours</strong> in Integral and Hatha yoga, David emerged as an undercover yogi. As a spiritual engineer, he looks at consciousness as a cipher to encrypt within both new and existing systems. His mission: elevate the state of human consciousness and build a conscious planet.</p>
+        <p class="body-text reveal d1" style="margin-top:1.5rem;">
+          <a href="https://medium.com/@alkemist888/" target="_blank" style="font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); text-decoration:none; border-bottom:1px solid rgba(184,125,42,.35); padding-bottom:2px;">Read the Alkemist's Blog →</a>
+        </p>
+      </div>
+      <div class="reveal d2">
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-yr">Age 30</div>
+            <div class="tl-body"><strong>Motorcycle journey through India.</strong> A short family visit becomes three years of self-exploration.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-yr">Auroville</div>
+            <div class="tl-body"><strong>Sri Aurobindo's Integral Yoga.</strong> Three years in the universal township. Home becomes internal, not geographical.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-yr">2016</div>
+            <div class="tl-body"><strong>Meets Sadhguru.</strong> Unlocks the spiritual code of the heart. Hatha yoga training deepens the balance of body, mind, and energy.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-yr">10K+</div>
+            <div class="tl-body"><strong>Meditation hours logged.</strong> An undercover yogi with embedded spiritual source code.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-yr">Now</div>
+            <div class="tl-body"><strong>Spiritual Engineer.</strong> Consciousness as a cipher. Building a conscious planet.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONNECT ── -->
+<section id="connect" class="section off" style="padding-top:6rem; padding-bottom:5rem;">
+  <div class="section-inner" style="text-align:center;">
+    <p style="font-size:10px; font-weight:700; letter-spacing:.38em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem;" class="reveal">Connect</p>
+    <div class="social-row reveal d1">
+      <a class="social-link" href="https://x.com/alkemist888" target="_blank">
+        <svg viewBox="0 0 24 24" fill="var(--ink)"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.261 5.632 5.903-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        <span class="social-lbl">X</span>
+      </a>
+      <a class="social-link" href="https://instagram.com/alkemist888" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="var(--ink)" stroke-width="1.75"/><circle cx="12" cy="12" r="4.5" stroke="var(--ink)" stroke-width="1.75"/><circle cx="17.5" cy="6.5" r="1.2" fill="var(--ink)"/></svg>
+        <span class="social-lbl">Instagram</span>
+      </a>
+      <a class="social-link" href="https://linkedin.com/in/davidkumaran" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 100-4 2 2 0 000 4z" stroke="var(--ink)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="social-lbl">LinkedIn</span>
+      </a>
+      <a class="social-link" href="https://medium.com/@alkemist888" target="_blank">
+        <svg viewBox="0 0 24 24" fill="var(--ink)"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zm7.42 0c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg>
+        <span class="social-lbl">Medium</span>
+      </a>
+    </div>
+    <div class="footer-note reveal d2">
+      <div>The Alkemist — David Kumaran</div>
+      <div>Silicon Valley · Auroville · Global</div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const obs = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
+  }, { threshold: 0.07, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
